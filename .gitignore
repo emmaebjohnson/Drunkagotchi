@@ -1,5 +1,5 @@
 managed_components/
-.vscode
+.vscode/
 dependencies.lock
 sdkconfig
 build/
