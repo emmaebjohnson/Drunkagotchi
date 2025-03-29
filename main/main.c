@@ -19,6 +19,7 @@
 #include "esp_err.h"
 #include "esp_log.h"
 #include "lvgl.h"
+#include "drunkagotchi_ui.c"
 
 #if CONFIG_EXAMPLE_LCD_CONTROLLER_ILI9341
 #include "esp_lcd_ili9341.h"
@@ -308,5 +309,6 @@ void app_main(void)
     // Lock the mutex due to the LVGL APIs are not thread-safe
     _lock_acquire(&lvgl_api_lock);
     example_lvgl_demo_ui(display);
+    drunkagotchi_ui(display);
     _lock_release(&lvgl_api_lock);
 }
