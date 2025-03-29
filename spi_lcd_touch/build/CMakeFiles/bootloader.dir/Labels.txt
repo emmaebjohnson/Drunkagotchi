@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+/Users/emmajohnson/Desktop/Hackathon/Drunkagotchi/spi_lcd_touch/build/CMakeFiles/bootloader
+/Users/emmajohnson/Desktop/Hackathon/Drunkagotchi/spi_lcd_touch/build/CMakeFiles/bootloader.rule
+/Users/emmajohnson/Desktop/Hackathon/Drunkagotchi/spi_lcd_touch/build/CMakeFiles/bootloader-complete.rule
+/Users/emmajohnson/Desktop/Hackathon/Drunkagotchi/spi_lcd_touch/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+/Users/emmajohnson/Desktop/Hackathon/Drunkagotchi/spi_lcd_touch/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/Users/emmajohnson/Desktop/Hackathon/Drunkagotchi/spi_lcd_touch/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/Users/emmajohnson/Desktop/Hackathon/Drunkagotchi/spi_lcd_touch/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/Users/emmajohnson/Desktop/Hackathon/Drunkagotchi/spi_lcd_touch/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/Users/emmajohnson/Desktop/Hackathon/Drunkagotchi/spi_lcd_touch/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/Users/emmajohnson/Desktop/Hackathon/Drunkagotchi/spi_lcd_touch/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule

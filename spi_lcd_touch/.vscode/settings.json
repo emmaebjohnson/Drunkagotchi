@@ -1,3 +1,9 @@
 {
-  "C_Cpp.intelliSenseEngine": "default"
+  "C_Cpp.intelliSenseEngine": "default",
+  "idf.flashType": "UART",
+  "idf.port": "/dev/tty.usbserial-0001",
+  "files.associations": {
+    "esp_lcd_panel_io.h": "c",
+    "esp_lcd_touch_stmpe610.h": "c"
+  }
 }
