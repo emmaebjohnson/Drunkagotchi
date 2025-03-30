@@ -9,6 +9,15 @@
 #include <content/game.c>
 #include <content/stats.c>
 
+LV_IMAGE_DECLARE(bear);
+ LV_IMAGE_DECLARE(bear2);
+ static const lv_img_dsc_t *current_image = &bear;  // Track current image manually
+ LV_IMG_DECLARE(happyfood);
+ LV_IMG_DECLARE(carrot);
+ LV_IMG_DECLARE(game);
+ 
+ lv_obj_t * char_btn = NULL;
+
 void event_handler(lv_event_t * e) 
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -135,7 +144,6 @@ void draw_character(lv_obj_t * parent) {
     char_btn = lv_imagebutton_create(parent);
     lv_imagebutton_set_src(char_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &bear, NULL);
     lv_obj_align(char_btn, LV_ALIGN_CENTER, 0, 0);
-    
     lv_obj_add_event_cb(char_btn, event_handler, LV_EVENT_CLICKED, (void*)7);
 }
 
@@ -177,6 +185,7 @@ void draw_right_ui(lv_obj_t * parent) {
     lv_obj_add_style(stats_btn, &style_pr, LV_STATE_PRESSED);
     //lv_obj_set_size(stats_btn, 60, 30);
     lv_obj_align(stats_btn, LV_ALIGN_RIGHT_MID, -20,  40);
+    lv_obj_add_event_cb(stats_btn, event_handler, LV_EVENT_CLICKED, (void*)3);  
 
 }
 
