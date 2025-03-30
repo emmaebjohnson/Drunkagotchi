@@ -4,6 +4,7 @@
 #include "minigame_ui.c"
 #include <stdio.h>
 #include <content/character.c>
+#include <content/bear3.c>
 #include <content/bear2.c>
 #include <content/bear.c>
 #include <content/happyfood2.c>
@@ -13,6 +14,7 @@
 
 LV_IMAGE_DECLARE(bear);
  LV_IMAGE_DECLARE(bear2);
+ LV_IMAGE_DECLARE(bear3);
  static const lv_img_dsc_t *current_image = &bear;  // Track current image manually
  LV_IMG_DECLARE(happyfood);
  LV_IMG_DECLARE(carrot);
@@ -93,6 +95,9 @@ void event_handler(lv_event_t * e)
                 if (current_image == &bear) {
                     lv_imagebutton_set_src(char_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &bear2, NULL);
                     current_image = &bear2;  // Update to new image
+                } else if (current_image == &bear2) {
+                    lv_imagebutton_set_src(char_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &bear3, NULL);
+                    current_image = &bear3;  // Update to new image
                 } else {
                     lv_imagebutton_set_src(char_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &bear, NULL);
                     current_image = &bear;  // Update to original image
