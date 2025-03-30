@@ -1,6 +1,7 @@
 #include "lvgl.h"
 #include "drunkagotchi.h"
 #include "drunkagotchi.c"
+#include "minigame_ui.c"
 #include <stdio.h>
 #include <content/character.c>
 #include <content/bear2.c>
@@ -34,20 +35,28 @@ void event_handler(lv_event_t * e)
         switch (action) {
             case 0:
                 printf("Feed Healthy Food\n");
-                tama->full += 10;
-                tama->happy += 2;  // Increase full stat
+                if (tama->full + 10 <= 100 && tama->happy + 2 <= 100) 
+                {
+                    tama->full += 10;
+                    tama->happy += 2;  // Increase full stat
+                }
+                
                 break;
             case 1:
-                printf("Feed Happy Food\n");
-                tama->full += 2;
-                tama->happy += 10;  // Increase happy stat
+                if(tama->happy + 10 <= 100 && tama->full + 2 <= 100)
+                {
+                    tama->full += 2;
+                    tama->happy += 10; 
+                }
                 break;
             case 2:
                 printf("Train\n");
+                tama->state = 3;
                 minigame_ui(disp_global);  // Call function to play game
                 break;
             case 3:
                 printf("View Stats\n");
+                tama->state = 2;
                 stats_ui(disp_global, tama);  // Update UI with stats
                 break;
             case 4:
@@ -69,6 +78,7 @@ void event_handler(lv_event_t * e)
                 break;
             case 5:
                 printf("Back to HomeScreen\n");
+                tama->state = 0;
                 homescreen_ui(disp_global);
                 
                 break;
@@ -237,6 +247,7 @@ void draw_right_ui(lv_obj_t * parent) {
 
 void homescreen_ui(lv_display_t * disp)
 {
+    tama->state = 1;
     lv_obj_t * scr = lv_display_get_screen_active(disp);
     lv_obj_clean(scr);
 
