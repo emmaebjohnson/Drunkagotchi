@@ -19,6 +19,9 @@ typedef struct Message {
 Message message;
 lv_obj_t *message_text;  // Global LVGL label
 esp_now_peer_info_t peerInfo = {};
+lv_obj_t *scr = NULL;
+
+
 
 // Callback for when data is sent
 void onSent(const uint8_t *macAddr, esp_now_send_status_t status) {
@@ -86,21 +89,72 @@ void send_message(lv_timer_t *timer) {
     }
 }
 
-void battle_ui(lv_display_t *disp, int type) {
+void wifi_handler(lv_event_t * e) 
+{
+    lv_event_code_t code = lv_event_get_code(e);
+
+    if (code == LV_EVENT_CLICKED) {
+        // Get the action selected (from the event data)
+        uint32_t action = (uint32_t)lv_event_get_user_data(e);
+        LV_LOG_USER("Clicked action: %u", action);
+
+        // Handle actions based on the button clicked
+        switch (action) {
+            case 0:
+
+                lv_obj_clean(scr);
+                message_text = lv_label_create(scr);
+                lv_label_set_text(message_text, "Sending...");
+                lv_obj_align(message_text, LV_ALIGN_CENTER, 0, 0);
+            
+                init_esp_now_sender();
+                lv_timer_create(send_message, 2000, NULL);  // Corrected function pointer
+
+                break;
+            case 1:
+
+                lv_obj_clean(scr);
+                message_text = lv_label_create(scr);
+                lv_label_set_text(message_text, "Waiting for message...");
+                lv_obj_align(message_text, LV_ALIGN_CENTER, 0, 0);
+        
+                init_esp_now_receiver();
+
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+void draw_ui(lv_obj_t * parent) {
+    // Attack Button
+    lv_obj_t * attack_btn = lv_btn_create(parent);
+    lv_obj_set_size(attack_btn, 60, 30);
+    lv_obj_align(attack_btn, LV_ALIGN_CENTER, -40, 0);
+    lv_obj_t * attack_label = lv_label_create(attack_btn);
+    lv_label_set_text(attack_label, "ATTACK!");
+    lv_obj_center(attack_label);
+    
+    // Defend Button
+    lv_obj_t * defend_btn = lv_btn_create(parent);
+    lv_obj_set_size(defend_btn, 60, 30);
+    lv_obj_align(defend_btn, LV_ALIGN_CENTER, 40, 0);
+    lv_obj_t * defend_label = lv_label_create(defend_btn);
+    lv_label_set_text(defend_label, "DEFEND!");
+    lv_obj_center(defend_label);
+    
+    lv_obj_add_event_cb(attack_btn, wifi_handler, LV_EVENT_CLICKED, (void*)0);  
+    lv_obj_add_event_cb(defend_btn, wifi_handler, LV_EVENT_CLICKED, (void*)1);
+}
+
+
+void battle_ui(lv_display_t * disp) {
     init_wifi();
     esp_now_init();
 
-    lv_obj_t *scr = lv_display_get_screen_active(disp);
+    scr = lv_display_get_screen_active(disp);
     lv_obj_clean(scr);
 
-    message_text = lv_label_create(scr);
-    lv_label_set_text(message_text, type == 0 ? "Sending..." : "Waiting for message...");
-    lv_obj_align(message_text, LV_ALIGN_CENTER, 0, 0);
-
-    if (type == 0) {
-        init_esp_now_sender();
-        lv_timer_create(send_message, 2000, NULL);  // Corrected function pointer
-    } else {
-        init_esp_now_receiver();
-    }
+    draw_ui(scr);
 }
