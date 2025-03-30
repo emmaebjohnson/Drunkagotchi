@@ -1,5 +1,6 @@
 #include "lvgl.h"
 #include "drunkagotchi.h"
+#include "drunkagotchi.c"
 #include <stdio.h>
 #include <content/character.c>
 #include <content/bear2.c>
@@ -49,11 +50,25 @@ void event_handler(lv_event_t * e)
                 break;
             case 4:
                 printf("Breathalyzer\n");
-                // Call function to drink
+                //replace with actual function to check BAC
+                tama->BAC += 0.01f;
+                tama->drunk = tama->BAC * 1000.0f;  
+
+                if (current_image == &bear) {
+                    lv_imagebutton_set_src(char_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &bear2, NULL);
+                    current_image = &bear2;  // Update to new image
+
+                } else {
+                    lv_imagebutton_set_src(char_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &bear, NULL);
+                    current_image = &bear;  // Update to original image
+                }
+
+                homescreen_ui(disp_global);  // Return to home screen
                 break;
             case 5:
                 printf("Back to HomeScreen\n");
                 homescreen_ui(disp_global);
+                
                 break;
             case 6:
                 printf("Battle\n");
@@ -156,8 +171,6 @@ void draw_character(lv_obj_t * parent) {
     lv_obj_add_event_cb(char_btn, event_handler, LV_EVENT_CLICKED, (void*)7);
 }
 
-static float current_bac = 0.08; // BAC Variable
-
 void draw_right_ui(lv_obj_t * parent) {
     static lv_style_prop_t tr_prop[] = {LV_STYLE_TRANSFORM_WIDTH, LV_STYLE_IMAGE_RECOLOR_OPA, 0};
     static lv_style_transition_dsc_t tr;
@@ -177,7 +190,7 @@ void draw_right_ui(lv_obj_t * parent) {
     // BAC Display (Larger & Variable)
     lv_obj_t * right_label = lv_label_create(parent);
     char bac_text[32];
-    snprintf(bac_text, sizeof(bac_text), "Tito\nBAC: %.2f", current_bac);
+    snprintf(bac_text, sizeof(bac_text), "Tito\nBAC: %.2f", tama->BAC);
     lv_label_set_text(right_label, bac_text);
     lv_obj_set_style_text_font(right_label, &lv_font_montserrat_14, 0); // Larger Font
     lv_obj_align(right_label, LV_ALIGN_RIGHT_MID, -20, -70);

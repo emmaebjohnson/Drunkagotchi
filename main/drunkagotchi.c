@@ -16,6 +16,3 @@ void play_game(Tamagotchi *t) {
     t->trained += 10;
 }
 
-void drink(Tamagotchi *t) {
-    t->drunk += 10;
-}
