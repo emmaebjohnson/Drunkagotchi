@@ -20,6 +20,7 @@
 #include "esp_log.h"
 #include "lvgl.h"
 #include "drunkagotchi_ui.c"
+#include "drunkagotchi.h"
 #include "stats_ui.c"
 
 #if CONFIG_EXAMPLE_LCD_CONTROLLER_ILI9341
@@ -172,6 +173,8 @@ static void example_lvgl_port_task(void *arg)
 
 void app_main(void)
 {
+    Tamagotchi tama = { .happy = 50, .full = 50, .trained = 50, .drunk = 0 };
+
     ESP_LOGI(TAG, "Turn off LCD backlight");
     gpio_config_t bk_gpio_config = {
         .mode = GPIO_MODE_OUTPUT,
@@ -311,6 +314,6 @@ void app_main(void)
     _lock_acquire(&lvgl_api_lock);
     example_lvgl_demo_ui(display);
     drunkagotchi_ui(display);
-    stats_ui(display);
+    stats_ui(display, &tama);
     _lock_release(&lvgl_api_lock);
 }

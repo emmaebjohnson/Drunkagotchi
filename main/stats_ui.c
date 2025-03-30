@@ -1,11 +1,31 @@
 #include "lvgl.h"
+#include "drunkagotchi.h"
 
-static void update_bar(void * bar, int32_t value)
+// Global variables to store bar references
+static lv_obj_t * bar_happy;
+static lv_obj_t * bar_full;
+static lv_obj_t * bar_trained;
+static lv_obj_t * bar_drunk;
+
+static void update_bar(void * bar, int32_t value, Tamagotchi* tama)
 {
-    lv_bar_set_value((lv_obj_t *)bar, value, LV_ANIM_ON);
+    lv_bar_set_value(bar_happy, tama->happy, LV_ANIM_ON);
+    lv_bar_set_value(bar_full, tama->full, LV_ANIM_ON);
+    lv_bar_set_value(bar_trained, tama->trained, LV_ANIM_ON);
+    lv_bar_set_value(bar_drunk, tama->drunk, LV_ANIM_ON);
+}
+static void event_handler(lv_event_t * e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+
+    if(code == LV_EVENT_CLICKED) {
+        LV_LOG_USER("Clicked");
+        lv_display_t * disp = lv_event_get_user_data(e);
+        drunkagotchi_ui(disp);
+    }
 }
 
-void stats_ui(lv_display_t * disp)
+void stats_ui(lv_display_t * disp, Tamagotchi * tama)
 {
     lv_obj_t * scr = lv_display_get_screen_active(disp);
     lv_obj_clean(scr);
@@ -22,10 +42,10 @@ void stats_ui(lv_display_t * disp)
     lv_label_set_text(status_label, "Your Tama's Stats :)");
     lv_obj_center(status_label);
 
-    // Function to create a stat bar
-    void create_stat_bar(lv_obj_t * parent, const char * icon_text, int32_t initial_value) {
+    lv_obj_t * create_stat_bar(lv_obj_t * parent, const char * icon_text, int32_t initial_value) 
+    {
         lv_obj_t * stat_container = lv_obj_create(parent);
-        lv_obj_set_size(stat_container, 320, 40);
+        lv_obj_set_size(stat_container, 320, 30);
         lv_obj_set_flex_flow(stat_container, LV_FLEX_FLOW_ROW);
         lv_obj_set_style_pad_all(stat_container, 5, 0);
 
@@ -47,12 +67,27 @@ void stats_ui(lv_display_t * disp)
         lv_bar_set_range(bar, 0, 100);
         lv_bar_set_value(bar, initial_value, LV_ANIM_OFF);
         lv_obj_add_style(bar, &style_indic, LV_PART_INDICATOR);
+
+        return bar;
     }
 
     // Create stat bars
-    create_stat_bar(container, LV_SYMBOL_EYE_CLOSE, 75);   // Happy
-    create_stat_bar(container, LV_SYMBOL_CUT, 60);    // Full
-    create_stat_bar(container, LV_SYMBOL_PLAY, 80);  // Trained
-    create_stat_bar(container, LV_SYMBOL_WARNING, 30); // Drunk
+    bar_happy = create_stat_bar(container, LV_SYMBOL_EYE_CLOSE, tama->happy);   // Happy
+    bar_full = create_stat_bar(container, LV_SYMBOL_CUT, tama->full);    // Full
+    bar_trained = create_stat_bar(container, LV_SYMBOL_PLAY, tama->trained);  // Trained
+    bar_drunk = create_stat_bar(container, LV_SYMBOL_WARNING, tama->drunk); // Drunk
+
+    // Button to go back to main menu
+    lv_obj_t * back_btn = lv_btn_create(container);
+    lv_obj_set_size(back_btn, 70, 30);
+    lv_obj_t * label;
+    lv_obj_add_event_cb(back_btn, event_handler, LV_EVENT_ALL, NULL);
+    lv_obj_align(back_btn, LV_ALIGN_BOTTOM_LEFT, -10, -10);
+    lv_obj_remove_flag(back_btn, LV_OBJ_FLAG_PRESS_LOCK);
+
+    label = lv_label_create(back_btn);
+    lv_label_set_text(label, "Back");
+    lv_obj_center(label);
 }
+
 
