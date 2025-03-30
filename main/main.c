@@ -23,6 +23,7 @@
 #include "drunkagotchi.h"
 #include "stats_ui.c"
 #include "minigame_ui.c"
+#include "battle_ui.c"
 
 #if CONFIG_EXAMPLE_LCD_CONTROLLER_ILI9341
 #include "esp_lcd_ili9341.h"
@@ -138,8 +139,9 @@ static void example_lvgl_touch_cb(lv_indev_t * indev, lv_indev_data_t * data)
     uint16_t touchpad_y[1] = {0};
     uint8_t touchpad_cnt = 0;
 
+
     esp_lcd_touch_handle_t touch_pad = lv_indev_get_user_data(indev);
-    esp_lcd_touch_read_data(touch_pad);
+    ESP_ERROR_CHECK(esp_lcd_touch_read_data(touch_pad));
     /* Get coordinates */
     bool touchpad_pressed = esp_lcd_touch_get_coordinates(touch_pad, touchpad_x, touchpad_y, NULL, &touchpad_cnt, 1);
 
@@ -147,6 +149,7 @@ static void example_lvgl_touch_cb(lv_indev_t * indev, lv_indev_data_t * data)
         data->point.x = touchpad_x[0];
         data->point.y = touchpad_y[0];
         data->state = LV_INDEV_STATE_PRESSED;
+        printf("TOUCHED: X: %d, Y: %d\n",touchpad_x[0],touchpad_y[0]);
     } else {
         data->state = LV_INDEV_STATE_RELEASED;
     }
@@ -310,6 +313,7 @@ void app_main(void)
     lv_indev_set_display(indev, display);
     lv_indev_set_user_data(indev, tp);
     lv_indev_set_read_cb(indev, example_lvgl_touch_cb);
+    lv_indev_enable(indev, true);
 #endif
 
     ESP_LOGI(TAG, "Create LVGL task");
@@ -319,9 +323,10 @@ void app_main(void)
     // Lock the mutex due to the LVGL APIs are not thread-safe
     _lock_acquire(&lvgl_api_lock);
     lv_disp_set_rotation(display, LV_DISP_ROTATION_90);
+    drunkagotchi_ui(display);
     example_lvgl_demo_ui(display);
     stats_ui(display, tama);
     minigame_ui(display);
-    homescreen_ui(display);
+    // example_lvgl_demo_ui(display);
     _lock_release(&lvgl_api_lock);
 }
