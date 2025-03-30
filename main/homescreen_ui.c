@@ -10,6 +10,7 @@
 #include <content/carrot.c>
 #include <content/game.c>
 #include <content/stats.c>
+#include <content/balance.c>
 
 LV_IMAGE_DECLARE(bear);
  LV_IMAGE_DECLARE(bear2);
@@ -96,6 +97,10 @@ void event_handler(lv_event_t * e)
                     current_image = &bear;  // Update to original image
                 }
                 break;
+            case 8:
+                printf("Balance Game\n");
+                //balance_game_ui(disp_global);
+                break;
             default:
                 break;
         }
@@ -157,20 +162,19 @@ void draw_left_ui(lv_obj_t * parent) {
     // lv_obj_center(battle_label);
     // Stats Button
 
-    // LV_IMG_DECLARE(stats);
-    // lv_obj_t * stats_btn = lv_imagebutton_create(lv_screen_active());
-    // lv_imagebutton_set_src(stats_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &stats, NULL);
-    // lv_obj_add_style(stats_btn, &style_def, 0);
-    // lv_obj_add_style(stats_btn, &style_pr, LV_STATE_PRESSED);
-    // //lv_obj_set_size(stats_btn, 60, 30);
-    // lv_obj_align(stats_btn, LV_ALIGN_LEFT_MID, x_offset, initial_offset + button_size + button_spacing / 2);
-    // lv_obj_add_event_cb(stats_btn, event_handler, LV_EVENT_CLICKED, (void*)3); 
+    LV_IMG_DECLARE(balance);
+    lv_obj_t * balance_btn = lv_imagebutton_create(lv_screen_active());
+    lv_imagebutton_set_src(balance_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &balance, NULL);
+    lv_obj_add_style(balance_btn, &style_def, 0);
+    lv_obj_add_style(balance_btn, &style_pr, LV_STATE_PRESSED);
+    lv_obj_align(balance_btn, LV_ALIGN_LEFT_MID, x_offset, initial_offset + button_size + button_spacing / 2);
+    lv_obj_add_event_cb(balance_btn, event_handler, LV_EVENT_CLICKED, (void*)8); 
 
     // Event handlers
     lv_obj_add_event_cb(feed_healthy_btn, event_handler, LV_EVENT_CLICKED, (void*)0);
     lv_obj_add_event_cb(feed_happy_btn, event_handler, LV_EVENT_CLICKED, (void*)1);
     lv_obj_add_event_cb(games_btn, event_handler, LV_EVENT_CLICKED, (void*)2);
-    //lv_obj_add_event_cb(stats_btn, event_handler, LV_EVENT_CLICKED, (void*)3);
+    lv_obj_add_event_cb(balance_btn, event_handler, LV_EVENT_CLICKED, (void*)8);
 }
 
 void draw_character(lv_obj_t * parent) {
