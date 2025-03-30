@@ -22,6 +22,7 @@
 #include "drunkagotchi_ui.c"
 #include "drunkagotchi.h"
 #include "stats_ui.c"
+#include "minigame_ui.c"
 
 #if CONFIG_EXAMPLE_LCD_CONTROLLER_ILI9341
 #include "esp_lcd_ili9341.h"
@@ -69,6 +70,10 @@ static const char *TAG = "example";
 #define EXAMPLE_LVGL_TASK_MIN_DELAY_MS 1
 #define EXAMPLE_LVGL_TASK_STACK_SIZE   (4 * 1024)
 #define EXAMPLE_LVGL_TASK_PRIORITY     2
+
+// Define the global variables
+Tamagotchi *tama = NULL;
+lv_display_t *disp_global = NULL;
 
 // LVGL library is not thread-safe, this example will call LVGL APIs from different tasks, so use a mutex to protect it
 static _lock_t lvgl_api_lock;
@@ -171,8 +176,6 @@ static void example_lvgl_port_task(void *arg)
 
 void app_main(void)
 {
-    Tamagotchi tama = { .happy = 50, .full = 50, .trained = 50, .drunk = 0 };
-
     ESP_LOGI(TAG, "Turn off LCD backlight");
     gpio_config_t bk_gpio_config = {
         .mode = GPIO_MODE_OUTPUT,
@@ -235,8 +238,13 @@ void app_main(void)
     ESP_LOGI(TAG, "Initialize LVGL library");
     lv_init();
 
+    // define tama
+    tama = malloc(sizeof(Tamagotchi));
+    *tama = (Tamagotchi){ .happy = 50, .full = 50, .trained = 50, .drunk = 0 };
+
     // create a lvgl display
-    lv_display_t *display = lv_display_create(EXAMPLE_LCD_H_RES, EXAMPLE_LCD_V_RES);
+    disp_global = lv_display_create(EXAMPLE_LCD_H_RES, EXAMPLE_LCD_V_RES);
+    lv_display_t *display = disp_global;
 
     // alloc draw buffers used by LVGL
     // it's recommended to choose the size of the draw buffer(s) to be at least 1/10 screen sized
@@ -310,8 +318,10 @@ void app_main(void)
     ESP_LOGI(TAG, "Display LVGL Meter Widget");
     // Lock the mutex due to the LVGL APIs are not thread-safe
     _lock_acquire(&lvgl_api_lock);
+    lv_disp_set_rotation(display, LV_DISP_ROTATION_90);
     example_lvgl_demo_ui(display);
     drunkagotchi_ui(display);
-    stats_ui(display, &tama);
+    stats_ui(display, tama);
+    minigame_ui(display);
     _lock_release(&lvgl_api_lock);
 }
