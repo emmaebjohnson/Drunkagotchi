@@ -2,6 +2,7 @@
 #include "drunkagotchi.h"
 #include <stdio.h>
 #include <content/character.c>
+#include <content/bear2.c>
 #include <content/bear.c>
 #include <content/happyfood2.c>
 #include <content/carrot.c>
@@ -15,7 +16,7 @@ void event_handler(lv_event_t * e)
     if (code == LV_EVENT_CLICKED) {
         // Get the action selected (from the event data)
         uint32_t action = (uint32_t)lv_event_get_user_data(e);
-        printf("Clicked action: %lu", action);
+        printf("Clicked action: %lu\n", action);
 
         // Handle actions based on the button clicked
         switch (action) {
@@ -48,6 +49,18 @@ void event_handler(lv_event_t * e)
             case 6:
                 printf("Battle\n");
                 //battle_ui(disp_global);
+                break;
+            case 7:
+                printf("PARTY!\n");
+                
+                // Button click handler
+                if (current_image == &bear) {
+                    lv_imagebutton_set_src(char_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &bear2, NULL);
+                    current_image = &bear2;  // Update to new image
+                } else {
+                    lv_imagebutton_set_src(char_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &bear, NULL);
+                    current_image = &bear;  // Update to original image
+                }
                 break;
             default:
                 break;
@@ -88,7 +101,6 @@ void draw_left_ui(lv_obj_t * parent) {
     lv_obj_align(feed_happy_btn, LV_ALIGN_LEFT_MID, x_offset, initial_offset -button_size * 2 - button_spacing);
 
     // Healthy Food Button
-    LV_IMG_DECLARE(carrot);
     lv_obj_t * feed_healthy_btn = lv_imagebutton_create(lv_screen_active());
     lv_imagebutton_set_src(feed_healthy_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &carrot, NULL);
     lv_obj_add_style(feed_healthy_btn, &style_def, 0);
@@ -96,7 +108,6 @@ void draw_left_ui(lv_obj_t * parent) {
     lv_obj_align(feed_healthy_btn, LV_ALIGN_LEFT_MID, x_offset,  initial_offset -button_size - button_spacing / 2);
 
     // Games Button
-    LV_IMG_DECLARE(game);
     lv_obj_t * games_btn = lv_imagebutton_create(lv_screen_active());
     lv_imagebutton_set_src(games_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &game, NULL);
     lv_image_set_src(games_btn, &game);
@@ -120,10 +131,12 @@ void draw_left_ui(lv_obj_t * parent) {
 }
 
 void draw_character(lv_obj_t * parent) {
-    LV_IMAGE_DECLARE(bear);
-    lv_obj_t * img = lv_image_create(parent);
-    lv_image_set_src(img, &bear);
-    lv_obj_align(img, LV_ALIGN_CENTER, 0, 0);
+
+    char_btn = lv_imagebutton_create(parent);
+    lv_imagebutton_set_src(char_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &bear, NULL);
+    lv_obj_align(char_btn, LV_ALIGN_CENTER, 0, 0);
+    
+    lv_obj_add_event_cb(char_btn, event_handler, LV_EVENT_CLICKED, (void*)7);
 }
 
 void draw_right_ui(lv_obj_t * parent) {
