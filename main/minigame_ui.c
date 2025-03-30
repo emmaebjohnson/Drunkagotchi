@@ -6,11 +6,9 @@
 
 // Function prototypes
 void handle_minigame_event(lv_event_t * e);
-void minigame_ui(lv_display_t * disp);
 void process_guess(int num1, int num2, char guess);
 
 static int num1, num2;
-static int battle_points = 0;
 
 void minigame_ui(lv_display_t * disp) {
     lv_obj_t * scr = lv_display_get_screen_active(disp);
