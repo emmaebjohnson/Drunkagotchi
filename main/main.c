@@ -149,6 +149,12 @@ static void example_lvgl_touch_cb(lv_indev_t * indev, lv_indev_data_t * data)
         data->point.y = touchpad_y[0];
         data->state = LV_INDEV_STATE_PRESSED;
         printf("TOUCHED: X: %d, Y: %d\n",touchpad_x[0],touchpad_y[0]);
+
+        lv_obj_t *circle = lv_obj_create(lv_scr_act());  // Create an object
+        lv_obj_set_size(circle, 20, 20);                 // Set width & height (diameter)
+        lv_obj_set_style_radius(circle, LV_RADIUS_CIRCLE, 0); // Make it a circle
+        lv_obj_align(circle, LV_ALIGN_TOP_LEFT, data->point.x, data->point.y);   // Position it at (x, y)
+        lv_obj_set_style_bg_color(circle, lv_color_make(255, 0, 0), 0); // Set color
     } else {
         data->state = LV_INDEV_STATE_RELEASED;
     }
@@ -292,9 +298,9 @@ void app_main(void)
         .rst_gpio_num = -1,
         .int_gpio_num = -1,
         .flags = {
-            .swap_xy = 0,
-            .mirror_x = 0,
-            .mirror_y = 0,
+            .swap_xy = 1,
+            .mirror_x = 1,
+            .mirror_y = 1,
         },
     };
     esp_lcd_touch_handle_t tp = NULL;
@@ -318,8 +324,10 @@ void app_main(void)
     _lock_acquire(&lvgl_api_lock);
     lv_disp_set_rotation(display, LV_DISP_ROTATION_90);
     example_lvgl_demo_ui(display);
-    stats_ui(display, tama);
-    minigame_ui(display);
+    
+    homescreen_ui(display);
+    //stats_ui(display, tama);
+    //minigame_ui(display);
     // example_lvgl_demo_ui(display);
     _lock_release(&lvgl_api_lock);
 }
