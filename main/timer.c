@@ -2,7 +2,7 @@
 #include "lvgl.h"
 #include "drunkagotchi.h"
 
-#define DECAY_INTERVAL_MS 10000 // Decay every 5 seconds
+#define DECAY_INTERVAL_MS 5000 // Decay every 5 seconds
 #define STAT_DECAY_AMOUNT 2    // Amount to decrease
 #define BAC_DECAY_AMOUNT 0.01f // Amount to decrease BAC
 
