@@ -22,6 +22,7 @@
 #include "homescreen_ui.c"
 #include "drunkagotchi.h"
 #include "stats_ui.c"
+#include "balance_game_ui.c"
 #include "battle_ui.c"
 #include "timer.c"
 
