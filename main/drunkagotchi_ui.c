@@ -1,4 +1,5 @@
 #include "lvgl.h"
+#include <stdio.h>
 
 static void button_event_cb(lv_event_t * e)
 {
