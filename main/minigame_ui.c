@@ -51,7 +51,7 @@ void handle_minigame_event(lv_event_t * e) {
     char guess = (char)(uintptr_t)lv_event_get_user_data(e);
 
     if (guess == 'b') {
-        drunkagotchi_ui(disp_global);
+        homescreen_ui(disp_global);
         return;
     }
 

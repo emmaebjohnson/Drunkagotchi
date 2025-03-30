@@ -19,10 +19,11 @@
 #include "esp_err.h"
 #include "esp_log.h"
 #include "lvgl.h"
-#include "drunkagotchi_ui.c"
+#include "homescreen_ui.c"
 #include "drunkagotchi.h"
 #include "stats_ui.c"
 #include "minigame_ui.c"
+#include "battle_ui.c"
 
 #if CONFIG_EXAMPLE_LCD_CONTROLLER_ILI9341
 #include "esp_lcd_ili9341.h"
@@ -323,6 +324,8 @@ void app_main(void)
     _lock_acquire(&lvgl_api_lock);
     lv_disp_set_rotation(display, LV_DISP_ROTATION_90);
     drunkagotchi_ui(display);
+    example_lvgl_demo_ui(display);
+    homescreen_ui(display);
     stats_ui(display, tama);
     minigame_ui(display);
     // example_lvgl_demo_ui(display);
