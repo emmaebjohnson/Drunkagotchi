@@ -322,8 +322,8 @@ void app_main(void)
     lv_disp_set_rotation(display, LV_DISP_ROTATION_90);
     example_lvgl_demo_ui(display);
     
-    battle_ui(display);
-    //homescreen_ui(display);
+    //battle_ui(display);
+    homescreen_ui(display);
     //stats_ui(display, tama);
     //minigame_ui(display);
     // example_lvgl_demo_ui(display);

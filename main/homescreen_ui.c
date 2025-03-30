@@ -3,9 +3,10 @@
 #include <stdio.h>
 #include <content/character.c>
 #include <content/bear.c>
-#include <content/happyfood.c>
+#include <content/happyfood2.c>
 #include <content/carrot.c>
 #include <content/game.c>
+#include <content/stats.c>
 
 void event_handler(lv_event_t * e) 
 {
@@ -59,11 +60,16 @@ void draw_left_ui(lv_obj_t * parent) {
     // UI dimensions and spacing
     int button_size = 50; // Reduced to fit screen
     int button_spacing = 10;
-    int x_offset = 20; // Consistent x-offset
+    int x_offset = 10; // Consistent x-offset
     int initial_offset = 30; // New vertical offset
+
+    static lv_style_prop_t tr_prop[] = {LV_STYLE_TRANSFORM_WIDTH, LV_STYLE_IMAGE_RECOLOR_OPA, 0};
+    static lv_style_transition_dsc_t tr;
+    lv_style_transition_dsc_init(&tr, tr_prop, lv_anim_path_linear, 200, 0, NULL);
 
     static lv_style_t style_def;
     lv_style_init(&style_def);
+    lv_style_set_transition(&style_def, &tr);
 
     /*Darken the button when pressed and make it wider*/
     static lv_style_t style_pr;
@@ -73,12 +79,12 @@ void draw_left_ui(lv_obj_t * parent) {
     lv_style_set_transform_width(&style_pr, 20);
 
     // Happy Food Button
-    LV_IMG_DECLARE(happyfood);
+    LV_IMG_DECLARE(happyfood2);
     lv_obj_t * feed_happy_btn = lv_imagebutton_create(lv_screen_active());
-    lv_imagebutton_set_src(feed_happy_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &happyfood, NULL);
+    lv_img_set_zoom(feed_happy_btn, .9);
+    lv_imagebutton_set_src(feed_happy_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &happyfood2, NULL);
     lv_obj_add_style(feed_happy_btn, &style_def, 0);
     lv_obj_add_style(feed_happy_btn, &style_pr, LV_STATE_PRESSED);
-    lv_obj_set_size(feed_happy_btn, button_size, button_size);
     lv_obj_align(feed_happy_btn, LV_ALIGN_LEFT_MID, x_offset, initial_offset -button_size * 2 - button_spacing);
 
     // Healthy Food Button
@@ -87,7 +93,6 @@ void draw_left_ui(lv_obj_t * parent) {
     lv_imagebutton_set_src(feed_healthy_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &carrot, NULL);
     lv_obj_add_style(feed_healthy_btn, &style_def, 0);
     lv_obj_add_style(feed_healthy_btn, &style_pr, LV_STATE_PRESSED);
-    lv_obj_set_size(feed_healthy_btn, button_size, button_size);
     lv_obj_align(feed_healthy_btn, LV_ALIGN_LEFT_MID, x_offset,  initial_offset -button_size - button_spacing / 2);
 
     // Games Button
@@ -97,7 +102,6 @@ void draw_left_ui(lv_obj_t * parent) {
     lv_image_set_src(games_btn, &game);
     lv_obj_add_style(games_btn, &style_def, 0);
     lv_obj_add_style(games_btn, &style_pr, LV_STATE_PRESSED);
-    lv_obj_set_size(games_btn, button_size, button_size);
     lv_obj_align(games_btn, LV_ALIGN_LEFT_MID, x_offset, initial_offset);
 
     // Battle Button
@@ -123,6 +127,21 @@ void draw_character(lv_obj_t * parent) {
 }
 
 void draw_right_ui(lv_obj_t * parent) {
+    static lv_style_prop_t tr_prop[] = {LV_STYLE_TRANSFORM_WIDTH, LV_STYLE_IMAGE_RECOLOR_OPA, 0};
+    static lv_style_transition_dsc_t tr;
+    lv_style_transition_dsc_init(&tr, tr_prop, lv_anim_path_linear, 200, 0, NULL);
+
+    static lv_style_t style_def;
+    lv_style_init(&style_def);
+    lv_style_set_transition(&style_def, &tr);
+
+    /*Darken the button when pressed and make it wider*/
+    static lv_style_t style_pr;
+    lv_style_init(&style_pr);
+    lv_style_set_image_recolor_opa(&style_pr, LV_OPA_30);
+    lv_style_set_image_recolor(&style_pr, lv_color_black());
+    lv_style_set_transform_width(&style_pr, 20);
+
     // Right text label
     lv_obj_t * right_label = lv_label_create(parent);
     lv_label_set_text(right_label, "Tito\n0.08");
@@ -138,13 +157,14 @@ void draw_right_ui(lv_obj_t * parent) {
     lv_obj_center(breath_label);
 
     // Stats Button
-    lv_obj_t * stats_btn = lv_btn_create(parent);
-    lv_obj_set_size(stats_btn, 60, 30);
-    lv_obj_align(stats_btn, LV_ALIGN_RIGHT_MID, -20, 40);
-    lv_obj_add_event_cb(stats_btn, event_handler, LV_EVENT_CLICKED, (void*)3);
-    lv_obj_t * stats_label = lv_label_create(stats_btn);
-    lv_label_set_text(stats_label, "Stats");
-    lv_obj_center(stats_label);
+    LV_IMG_DECLARE(stats);
+    lv_obj_t * stats_btn = lv_imagebutton_create(lv_screen_active());
+    lv_imagebutton_set_src(stats_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &stats, NULL);
+    lv_obj_add_style(stats_btn, &style_def, 0);
+    lv_obj_add_style(stats_btn, &style_pr, LV_STATE_PRESSED);
+    //lv_obj_set_size(stats_btn, 60, 30);
+    lv_obj_align(stats_btn, LV_ALIGN_RIGHT_MID, -20,  40);
+
 }
 
 void homescreen_ui(lv_display_t * disp)

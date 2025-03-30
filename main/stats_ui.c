@@ -73,5 +73,3 @@ void stats_ui(lv_display_t * disp, Tamagotchi * tama)
     lv_label_set_text(label, "Back");
     lv_obj_center(label);
 }
-
-
