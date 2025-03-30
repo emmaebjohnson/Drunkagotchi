@@ -23,6 +23,7 @@ void event_handler(lv_event_t * e)
                 break;
             case 2:
                 printf("Train\n");
+                minigame_ui(disp_global);  // Call function to play game
                 // Call function to train
                 break;
             case 3:
