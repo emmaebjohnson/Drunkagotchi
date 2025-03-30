@@ -23,6 +23,7 @@
 #include "drunkagotchi.h"
 #include "stats_ui.c"
 #include "minigame_ui.c"
+#include "balance_game_ui.c"
 #include "battle_ui.c"
 
 #if CONFIG_EXAMPLE_LCD_CONTROLLER_ILI9341

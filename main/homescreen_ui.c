@@ -18,6 +18,8 @@ LV_IMAGE_DECLARE(bear);
  LV_IMG_DECLARE(game);
  
  lv_obj_t * char_btn = NULL;
+ 
+ void balance_game_ui(lv_display_t * disp);
 
 void event_handler(lv_event_t * e) 
 {
@@ -71,8 +73,8 @@ void event_handler(lv_event_t * e)
                 
                 break;
             case 6:
-                printf("Battle\n");
-                //battle_ui(disp_global);
+                printf("Balance\n");
+                balance_game_ui(disp_global);
                 break;
             case 7:
                 printf("PARTY!\n");
@@ -138,6 +140,13 @@ void draw_left_ui(lv_obj_t * parent) {
     lv_obj_add_style(games_btn, &style_def, 0);
     lv_obj_add_style(games_btn, &style_pr, LV_STATE_PRESSED);
     lv_obj_align(games_btn, LV_ALIGN_LEFT_MID, x_offset, initial_offset);
+    
+    lv_obj_t * games2_btn = lv_imagebutton_create(lv_screen_active());
+    lv_imagebutton_set_src(games2_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &game, NULL);
+    lv_image_set_src(games2_btn, &game);
+    lv_obj_add_style(games2_btn, &style_def, 0);
+    lv_obj_add_style(games2_btn, &style_pr, LV_STATE_PRESSED);
+    lv_obj_align(games2_btn, LV_ALIGN_LEFT_MID, x_offset + button_size, initial_offset);
 
     // // Battle Button
     // lv_obj_t * battle_btn = lv_btn_create(parent);
@@ -160,6 +169,7 @@ void draw_left_ui(lv_obj_t * parent) {
     lv_obj_add_event_cb(feed_healthy_btn, event_handler, LV_EVENT_CLICKED, (void*)0);
     lv_obj_add_event_cb(feed_happy_btn, event_handler, LV_EVENT_CLICKED, (void*)1);
     lv_obj_add_event_cb(games_btn, event_handler, LV_EVENT_CLICKED, (void*)2);
+    lv_obj_add_event_cb(games2_btn, event_handler, LV_EVENT_CLICKED, (void*)6);
     //lv_obj_add_event_cb(stats_btn, event_handler, LV_EVENT_CLICKED, (void*)3);
 }
 
