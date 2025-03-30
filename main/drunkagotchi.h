@@ -21,7 +21,7 @@ void drink(Tamagotchi *t);
 
 void stats_ui(lv_display_t * disp, Tamagotchi * tama);
 void event_handler(lv_event_t * e);
-void drunkagotchi_ui(lv_display_t * disp);
+void homescreen_ui(lv_display_t * disp);
 void minigame_ui(lv_display_t * disp);
 
 
