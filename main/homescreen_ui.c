@@ -124,19 +124,28 @@ void draw_left_ui(lv_obj_t * parent) {
     lv_obj_add_style(games_btn, &style_pr, LV_STATE_PRESSED);
     lv_obj_align(games_btn, LV_ALIGN_LEFT_MID, x_offset, initial_offset);
 
-    // Battle Button
-    lv_obj_t * battle_btn = lv_btn_create(parent);
-    lv_obj_set_size(battle_btn, button_size + 10, button_size / 1.5);
-    lv_obj_align(battle_btn, LV_ALIGN_LEFT_MID, x_offset, initial_offset + button_size + button_spacing / 2);
-    lv_obj_t * battle_label = lv_label_create(battle_btn);
-    lv_label_set_text(battle_label, "Battle");
-    lv_obj_center(battle_label);
+    // // Battle Button
+    // lv_obj_t * battle_btn = lv_btn_create(parent);
+    // lv_obj_align(battle_btn, LV_ALIGN_LEFT_MID, x_offset, initial_offset + button_size + button_spacing / 2);
+    // lv_obj_t * battle_label = lv_label_create(battle_btn);
+    // lv_label_set_text(battle_label, "Battle");
+    // lv_obj_center(battle_label);
+    // Stats Button
+
+    // LV_IMG_DECLARE(stats);
+    // lv_obj_t * stats_btn = lv_imagebutton_create(lv_screen_active());
+    // lv_imagebutton_set_src(stats_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &stats, NULL);
+    // lv_obj_add_style(stats_btn, &style_def, 0);
+    // lv_obj_add_style(stats_btn, &style_pr, LV_STATE_PRESSED);
+    // //lv_obj_set_size(stats_btn, 60, 30);
+    // lv_obj_align(stats_btn, LV_ALIGN_LEFT_MID, x_offset, initial_offset + button_size + button_spacing / 2);
+    // lv_obj_add_event_cb(stats_btn, event_handler, LV_EVENT_CLICKED, (void*)3); 
 
     // Event handlers
     lv_obj_add_event_cb(feed_healthy_btn, event_handler, LV_EVENT_CLICKED, (void*)0);
     lv_obj_add_event_cb(feed_happy_btn, event_handler, LV_EVENT_CLICKED, (void*)1);
     lv_obj_add_event_cb(games_btn, event_handler, LV_EVENT_CLICKED, (void*)2);
-    lv_obj_add_event_cb(battle_btn, event_handler, LV_EVENT_CLICKED, (void*)6);
+    //lv_obj_add_event_cb(stats_btn, event_handler, LV_EVENT_CLICKED, (void*)3);
 }
 
 void draw_character(lv_obj_t * parent) {
@@ -146,6 +155,8 @@ void draw_character(lv_obj_t * parent) {
     lv_obj_align(char_btn, LV_ALIGN_CENTER, 0, 0);
     lv_obj_add_event_cb(char_btn, event_handler, LV_EVENT_CLICKED, (void*)7);
 }
+
+static float current_bac = 0.08; // BAC Variable
 
 void draw_right_ui(lv_obj_t * parent) {
     static lv_style_prop_t tr_prop[] = {LV_STYLE_TRANSFORM_WIDTH, LV_STYLE_IMAGE_RECOLOR_OPA, 0};
@@ -163,19 +174,32 @@ void draw_right_ui(lv_obj_t * parent) {
     lv_style_set_image_recolor(&style_pr, lv_color_black());
     lv_style_set_transform_width(&style_pr, 20);
 
-    // Right text label
+    // BAC Display (Larger & Variable)
     lv_obj_t * right_label = lv_label_create(parent);
-    lv_label_set_text(right_label, "Tito\n0.08");
-    lv_obj_align(right_label, LV_ALIGN_RIGHT_MID, -20, -40);
-    
-    // Breathalyzer Button
+    char bac_text[32];
+    snprintf(bac_text, sizeof(bac_text), "Tito\nBAC: %.2f", current_bac);
+    lv_label_set_text(right_label, bac_text);
+    lv_obj_set_style_text_font(right_label, &lv_font_montserrat_14, 0); // Larger Font
+    lv_obj_align(right_label, LV_ALIGN_RIGHT_MID, -20, -70);
+
+    // Breathalyzer Button (More Spacing)
     lv_obj_t * breath_btn = lv_btn_create(parent);
-    lv_obj_set_size(breath_btn, 60, 30);
-    lv_obj_add_event_cb(breath_btn, event_handler, LV_EVENT_CLICKED, (void*)4);  
-    lv_obj_align(breath_btn, LV_ALIGN_RIGHT_MID, -20, 0);
+    lv_obj_set_size(breath_btn, 80, 40); // Larger button
+    lv_obj_add_event_cb(breath_btn, event_handler, LV_EVENT_CLICKED, (void*)4);
+    lv_obj_align(breath_btn, LV_ALIGN_RIGHT_MID, -20, -10); // Lowered
     lv_obj_t * breath_label = lv_label_create(breath_btn);
-    lv_label_set_text(breath_label, "Breath");
+    lv_label_set_text(breath_label, "Get BAC");
     lv_obj_center(breath_label);
+
+    // Battle Button
+    // lv_obj_t * battle_btn = lv_btn_create(parent);
+    // lv_obj_set_size(battle_btn, 60, 30);
+    // lv_obj_align(battle_btn, LV_ALIGN_RIGHT_MID, -20,  55);
+    // lv_obj_t * battle_label = lv_label_create(battle_btn);
+    // lv_label_set_text(battle_label, "Battle");
+    // lv_obj_center(battle_label);
+    // lv_obj_add_event_cb(battle_btn, event_handler, LV_EVENT_CLICKED, (void*)6); 
+
 
     // Stats Button
     LV_IMG_DECLARE(stats);
@@ -184,9 +208,8 @@ void draw_right_ui(lv_obj_t * parent) {
     lv_obj_add_style(stats_btn, &style_def, 0);
     lv_obj_add_style(stats_btn, &style_pr, LV_STATE_PRESSED);
     //lv_obj_set_size(stats_btn, 60, 30);
-    lv_obj_align(stats_btn, LV_ALIGN_RIGHT_MID, -20,  40);
-    lv_obj_add_event_cb(stats_btn, event_handler, LV_EVENT_CLICKED, (void*)3);  
-
+    lv_obj_align(stats_btn, LV_ALIGN_RIGHT_MID, -20,  55);
+    lv_obj_add_event_cb(stats_btn, event_handler, LV_EVENT_CLICKED, (void*)3); 
 }
 
 void homescreen_ui(lv_display_t * disp)
