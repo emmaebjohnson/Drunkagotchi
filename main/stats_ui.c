@@ -13,16 +13,17 @@ static void update_bar(void * bar, int32_t value, Tamagotchi* tama)
     lv_bar_set_value(bar_full, tama->full, LV_ANIM_ON);
     lv_bar_set_value(bar_trained, tama->trained, LV_ANIM_ON);
     lv_bar_set_value(bar_drunk, tama->drunk, LV_ANIM_ON);
+
 }
 static void event_handler(lv_event_t * e)
 {
     lv_event_code_t code = lv_event_get_code(e);
 
-    if(code == LV_EVENT_CLICKED) {
-        LV_LOG_USER("Clicked");
-        lv_display_t * disp = lv_event_get_user_data(e);
-        drunkagotchi_ui(disp);
-    }
+    // if(code == LV_EVENT_CLICKED) {
+    //     LV_LOG_USER("Clicked");
+    //     lv_display_t * disp = lv_event_get_user_data(e);
+    //     drunkagotchi_ui(disp);
+    // }
 }
 
 void stats_ui(lv_display_t * disp, Tamagotchi * tama)
