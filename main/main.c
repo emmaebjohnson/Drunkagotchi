@@ -22,6 +22,7 @@
 #include "drunkagotchi_ui.c"
 #include "drunkagotchi.h"
 #include "stats_ui.c"
+#include "minigame_ui.c"
 
 #if CONFIG_EXAMPLE_LCD_CONTROLLER_ILI9341
 #include "esp_lcd_ili9341.h"
@@ -323,5 +324,6 @@ void app_main(void)
     example_lvgl_demo_ui(display);
     drunkagotchi_ui(display);
     stats_ui(display, tama);
+    minigame_ui(display);
     _lock_release(&lvgl_api_lock);
 }

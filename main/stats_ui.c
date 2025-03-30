@@ -10,22 +10,10 @@ static lv_obj_t * bar_drunk;
 extern lv_display_t * disp_global;  // Global display variable
 extern Tamagotchi * tama;  // Global Tamagotchi variable
 
-static void update_bar(Tamagotchi* tama)
-{
-    lv_bar_set_value(bar_happy, tama->happy, LV_ANIM_ON);
-    lv_bar_set_value(bar_full, tama->full, LV_ANIM_ON);
-    lv_bar_set_value(bar_trained, tama->trained, LV_ANIM_ON);
-    lv_bar_set_value(bar_drunk, tama->drunk, LV_ANIM_ON);
-}
-
 void stats_ui(lv_display_t * disp, Tamagotchi * tama)
 {
     lv_obj_t * scr = lv_display_get_screen_active(disp);
     lv_obj_clean(scr);
-    //lv_disp_set_rotation(disp, LV_DISP_ROTATION_90);
-
-    // Update if needed
-    //update_bar(tama);
 
     // Main container (vertical layout)
     lv_obj_t * container = lv_obj_create(scr);
