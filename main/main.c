@@ -30,9 +30,7 @@
 #include "esp_lcd_gc9a01.h"
 #endif
 
-#if CONFIG_EXAMPLE_LCD_TOUCH_CONTROLLER_STMPE610
-#include "esp_lcd_touch_stmpe610.h"
-#endif
+#include "esp_lcd_touch_xpt2046.h"
 
 static const char *TAG = "example";
 
@@ -284,7 +282,7 @@ void app_main(void)
 
 #if CONFIG_EXAMPLE_LCD_TOUCH_ENABLED
     esp_lcd_panel_io_handle_t tp_io_handle = NULL;
-    esp_lcd_panel_io_spi_config_t tp_io_config = ESP_LCD_TOUCH_IO_SPI_STMPE610_CONFIG(EXAMPLE_PIN_NUM_TOUCH_CS);
+    esp_lcd_panel_io_spi_config_t tp_io_config = ESP_LCD_TOUCH_IO_SPI_XPT2046_CONFIG(EXAMPLE_PIN_NUM_TOUCH_CS);
     // Attach the TOUCH to the SPI bus
     ESP_ERROR_CHECK(esp_lcd_new_panel_io_spi((esp_lcd_spi_bus_handle_t)LCD_HOST, &tp_io_config, &tp_io_handle));
 
@@ -303,7 +301,7 @@ void app_main(void)
 
 #if CONFIG_EXAMPLE_LCD_TOUCH_CONTROLLER_STMPE610
     ESP_LOGI(TAG, "Initialize touch controller STMPE610");
-    ESP_ERROR_CHECK(esp_lcd_touch_new_spi_stmpe610(tp_io_handle, &tp_cfg, &tp));
+    ESP_ERROR_CHECK(esp_lcd_touch_new_spi_xpt2046(tp_io_handle, &tp_cfg, &tp));
 #endif // CONFIG_EXAMPLE_LCD_TOUCH_CONTROLLER_STMPE610
 
     static lv_indev_t *indev;
