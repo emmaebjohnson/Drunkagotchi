@@ -132,7 +132,6 @@ static void example_lvgl_flush_cb(lv_display_t *disp, const lv_area_t *area, uin
     esp_lcd_panel_draw_bitmap(panel_handle, offsetx1, offsety1, offsetx2 + 1, offsety2 + 1, px_map);
 }
 
-#if CONFIG_EXAMPLE_LCD_TOUCH_ENABLED
 static void example_lvgl_touch_cb(lv_indev_t * indev, lv_indev_data_t * data)
 {
     uint16_t touchpad_x[1] = {0};
@@ -154,7 +153,6 @@ static void example_lvgl_touch_cb(lv_indev_t * indev, lv_indev_data_t * data)
         data->state = LV_INDEV_STATE_RELEASED;
     }
 }
-#endif
 
 static void example_increase_lvgl_tick(void *arg)
 {
@@ -283,7 +281,6 @@ void app_main(void)
     /* Register done callback */
     ESP_ERROR_CHECK(esp_lcd_panel_io_register_event_callbacks(io_handle, &cbs, display));
 
-#if CONFIG_EXAMPLE_LCD_TOUCH_ENABLED
     esp_lcd_panel_io_handle_t tp_io_handle = NULL;
     esp_lcd_panel_io_spi_config_t tp_io_config = ESP_LCD_TOUCH_IO_SPI_XPT2046_CONFIG(EXAMPLE_PIN_NUM_TOUCH_CS);
     // Attach the TOUCH to the SPI bus
@@ -302,10 +299,8 @@ void app_main(void)
     };
     esp_lcd_touch_handle_t tp = NULL;
 
-#if CONFIG_EXAMPLE_LCD_TOUCH_CONTROLLER_STMPE610
     ESP_LOGI(TAG, "Initialize touch controller STMPE610");
     ESP_ERROR_CHECK(esp_lcd_touch_new_spi_xpt2046(tp_io_handle, &tp_cfg, &tp));
-#endif // CONFIG_EXAMPLE_LCD_TOUCH_CONTROLLER_STMPE610
 
     static lv_indev_t *indev;
     indev = lv_indev_create();  // Input device driver (Touch)
@@ -314,7 +309,6 @@ void app_main(void)
     lv_indev_set_user_data(indev, tp);
     lv_indev_set_read_cb(indev, example_lvgl_touch_cb);
     lv_indev_enable(indev, true);
-#endif
 
     ESP_LOGI(TAG, "Create LVGL task");
     xTaskCreate(example_lvgl_port_task, "LVGL", EXAMPLE_LVGL_TASK_STACK_SIZE, NULL, EXAMPLE_LVGL_TASK_PRIORITY, NULL);
@@ -323,7 +317,6 @@ void app_main(void)
     // Lock the mutex due to the LVGL APIs are not thread-safe
     _lock_acquire(&lvgl_api_lock);
     lv_disp_set_rotation(display, LV_DISP_ROTATION_90);
-    drunkagotchi_ui(display);
     example_lvgl_demo_ui(display);
     homescreen_ui(display);
     stats_ui(display, tama);
