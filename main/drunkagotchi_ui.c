@@ -1,27 +1,46 @@
 #include "lvgl.h"
+#include "drunkagotchi.h"
 #include <stdio.h>
 
-static void button_event_cb(lv_event_t * e)
+void event_handler(lv_event_t * e) 
 {
-    uint32_t btn_id = lv_buttonmatrix_get_selected_button(lv_event_get_target_obj(e));
-    switch(btn_id) {
-        case 0: 
-            printf("Feed Healthy Food\n"); 
-            break;
-        case 1: 
-            printf("Feed Happy Food\n"); 
-            break;
-        case 2: 
-            printf("Train\n"); 
-            break;
-        case 3: 
-            printf("View Stats\n"); 
-            break;
-        case 4: 
-            printf("Drink\n"); 
-            break;
-        default: 
-            break;
+    lv_event_code_t code = lv_event_get_code(e);
+
+    if (code == LV_EVENT_CLICKED) {
+        // Get the action selected (from the event data)
+        uint32_t action = (uint32_t)lv_event_get_user_data(e);
+        LV_LOG_USER("Clicked action: %u", action);
+
+        // Handle actions based on the button clicked
+        switch (action) {
+            case 0:
+                printf("Feed Healthy Food\n");
+                // Call function to feed healthy
+                break;
+            case 1:
+                printf("Feed Happy Food\n");
+                // Call function to feed happy
+                break;
+            case 2:
+                printf("Train\n");
+                // Call function to train
+                break;
+            case 3:
+                printf("View Stats\n");
+                stats_ui(disp_global, tama);  // Update UI with stats
+                break;
+            case 4:
+                printf("Drink\n");
+                // Call function to drink
+                break;
+            case 5:
+                printf("Back to HomeScreen\n");
+                drunkagotchi_ui(disp_global);
+                // Call function to drink
+                break;
+            default:
+                break;
+        }
     }
 }
 
@@ -73,9 +92,10 @@ void drunkagotchi_ui(lv_display_t * disp)
     lv_obj_center(label5);
 
     // Event listeners
-    lv_obj_add_event_cb(btn_feed_healthy, button_event_cb, LV_EVENT_CLICKED, (void*)0);
-    lv_obj_add_event_cb(btn_feed_happy, button_event_cb, LV_EVENT_CLICKED, (void*)1);
-    lv_obj_add_event_cb(btn_train, button_event_cb, LV_EVENT_CLICKED, (void*)2);
-    lv_obj_add_event_cb(btn_stats, button_event_cb, LV_EVENT_CLICKED, (void*)3);
-    lv_obj_add_event_cb(btn_drink, button_event_cb, LV_EVENT_CLICKED, (void*)4);
+    lv_obj_add_event_cb(btn_feed_healthy, event_handler, LV_EVENT_CLICKED, (void*)0);  // 0 for Feed Healthy
+    lv_obj_add_event_cb(btn_feed_happy, event_handler, LV_EVENT_CLICKED, (void*)1);    // 1 for Feed Happy
+    lv_obj_add_event_cb(btn_train, event_handler, LV_EVENT_CLICKED, (void*)2);         // 2 for Train
+    lv_obj_add_event_cb(btn_stats, event_handler, LV_EVENT_CLICKED, (void*)3);         // 3 for Stats
+    lv_obj_add_event_cb(btn_drink, event_handler, LV_EVENT_CLICKED, (void*)4);         // 4 for Drink
+
 }

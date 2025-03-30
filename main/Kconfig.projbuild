@@ -13,7 +13,7 @@ menu "Example Configuration"
             bool "GC9A01"
     endchoice
 
-    config EXAMPLE_LCD_TOUCH_ENABLED
+    config EXAMPLE_LCD_TOUCH_ENABLED=y
         bool "Enable LCD touch"
         default n
         help
