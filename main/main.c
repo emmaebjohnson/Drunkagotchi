@@ -147,11 +147,11 @@ static void example_lvgl_touch_cb(lv_indev_t * indev, lv_indev_data_t * data)
         data->state = LV_INDEV_STATE_PRESSED;
         printf("TOUCHED: X: %d, Y: %d\n",touchpad_x[0],touchpad_y[0]);
 
-        lv_obj_t *circle = lv_obj_create(lv_scr_act());  // Create an object
-        lv_obj_set_size(circle, 20, 20);                 // Set width & height (diameter)
-        lv_obj_set_style_radius(circle, LV_RADIUS_CIRCLE, 0); // Make it a circle
-        lv_obj_align(circle, LV_ALIGN_TOP_LEFT, data->point.x, data->point.y);   // Position it at (x, y)
-        lv_obj_set_style_bg_color(circle, lv_color_make(255, 0, 0), 0); // Set color
+        // lv_obj_t *circle = lv_obj_create(lv_scr_act());  // Create an object
+        // lv_obj_set_size(circle, 20, 20);                 // Set width & height (diameter)
+        // lv_obj_set_style_radius(circle, LV_RADIUS_CIRCLE, 0); // Make it a circle
+        // lv_obj_align(circle, LV_ALIGN_TOP_LEFT, data->point.x, data->point.y);   // Position it at (x, y)
+        // lv_obj_set_style_bg_color(circle, lv_color_make(255, 0, 0), 0); // Set color
     } else {
         data->state = LV_INDEV_STATE_RELEASED;
     }
