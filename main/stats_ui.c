@@ -78,11 +78,11 @@ void stats_ui(lv_display_t * disp, Tamagotchi * tama)
     bar_drunk = create_stat_bar(container, LV_SYMBOL_WARNING, tama->drunk); // Drunk
 
     // Button to go back to main menu
-    lv_obj_t * back_btn = lv_btn_create(container);
+    lv_obj_t * back_btn = lv_btn_create(scr);  
     lv_obj_set_size(back_btn, 70, 30);
     lv_obj_t * label;
     lv_obj_add_event_cb(back_btn, event_handler, LV_EVENT_ALL, NULL);
-    lv_obj_align(back_btn, LV_ALIGN_BOTTOM_LEFT, -10, -10);
+    lv_obj_align(back_btn, LV_ALIGN_BOTTOM_RIGHT, -10, -10);
     lv_obj_remove_flag(back_btn, LV_OBJ_FLAG_PRESS_LOCK);
 
     label = lv_label_create(back_btn);
