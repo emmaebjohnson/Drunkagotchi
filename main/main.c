@@ -22,8 +22,8 @@
 #include "homescreen_ui.c"
 #include "drunkagotchi.h"
 #include "stats_ui.c"
-#include "minigame_ui.c"
 #include "battle_ui.c"
+#include "timer.c"
 
 #if CONFIG_EXAMPLE_LCD_CONTROLLER_ILI9341
 #include "esp_lcd_ili9341.h"
@@ -244,7 +244,7 @@ void app_main(void)
 
     // define tama
     tama = malloc(sizeof(Tamagotchi));
-    *tama = (Tamagotchi){ .happy = 0, .full = 0, .trained = 0, .drunk = 0 };
+    *tama = (Tamagotchi){ .happy = 0, .full = 0, .trained = 0, .drunk = 0, /*.state = 1*/ };
 
     // create a lvgl display
     disp_global = lv_display_create(EXAMPLE_LCD_H_RES, EXAMPLE_LCD_V_RES);
@@ -324,6 +324,7 @@ void app_main(void)
     
     //battle_ui(display);
     homescreen_ui(display);
+    start_stat_decay();
     //stats_ui(display, tama);
     //minigame_ui(display);
     // example_lvgl_demo_ui(display);
