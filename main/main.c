@@ -19,7 +19,7 @@
 #include "esp_err.h"
 #include "esp_log.h"
 #include "lvgl.h"
-#include "drunkagotchi_ui.c"
+#include "homescreen_ui.c"
 #include "drunkagotchi.h"
 #include "stats_ui.c"
 #include "minigame_ui.c"
@@ -322,7 +322,7 @@ void app_main(void)
     _lock_acquire(&lvgl_api_lock);
     lv_disp_set_rotation(display, LV_DISP_ROTATION_90);
     example_lvgl_demo_ui(display);
-    drunkagotchi_ui(display);
+    homescreen_ui(display);
     stats_ui(display, tama);
     minigame_ui(display);
     _lock_release(&lvgl_api_lock);
