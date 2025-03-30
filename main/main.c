@@ -244,7 +244,7 @@ void app_main(void)
 
     // define tama
     tama = malloc(sizeof(Tamagotchi));
-    *tama = (Tamagotchi){ .happy = 50, .full = 50, .trained = 50, .drunk = 0 };
+    *tama = (Tamagotchi){ .happy = 0, .full = 0, .trained = 0, .drunk = 0 };
 
     // create a lvgl display
     disp_global = lv_display_create(EXAMPLE_LCD_H_RES, EXAMPLE_LCD_V_RES);

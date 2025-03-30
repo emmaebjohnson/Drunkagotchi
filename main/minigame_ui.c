@@ -44,7 +44,7 @@ void minigame_ui(lv_display_t * disp) {
     lv_obj_align(btn_back, LV_ALIGN_BOTTOM_MID, 0, -20);
     lv_obj_t * label_back = lv_label_create(btn_back);
     lv_label_set_text(label_back, "Back");
-    lv_obj_add_event_cb(btn_back, handle_minigame_event, LV_EVENT_CLICKED, (void*)'b');
+    lv_obj_add_event_cb(btn_back, event_handler, LV_EVENT_CLICKED, (void*)5);
 }
 
 void handle_minigame_event(lv_event_t * e) {
